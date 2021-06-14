@@ -1,21 +1,19 @@
 #!/usr/bin/env python3
 import hashlib
-import time
-import os
 import sys
 
-"""utility class"""
+"""utilities"""
 class bgColors:
     success = "\033[92m"
     endC = '\033[0m'
     bold = '\033[1m'
     underline = '\033[4m'
     fail = '\033[91m'
-    warning = '\03393m'
+    warning = '\033[93m'
 
 helpMessage = f"""
 
-    usage: ./hash.py [hash type] [option] [fileName/string] 
+    usage: ./hash.py [hash type: sha256|sha512] [option] [fileName/string] 
 
     {bgColors.underline}OPTIONS:{bgColors.endC}
 
@@ -24,45 +22,60 @@ helpMessage = f"""
         {bgColors.bold}-s{bgColors.endC} Hash a string
 """
 
+def printHash(finalHash):
+    print("\n", finalHash, "\n")
+
+def printError(error):
+    if error.lower() == 'fail':
+        print(f"\n{bgColors.fail}Error: Hash not created{bgColors.endC}\n")
+    elif error.lower() == 'parameter':
+        print(f"{bgColors.warning}Missing required arguments, please see below{bgColors.endC}")
+        print(helpMessage)
+
+# def hashIt(hashType, option):
+    # if hashType == "sha256" and option == "-f":
+    #     try:
+    #         hashed = hashlib.sha256()
+    #         with open(sys.argv[3], 'rb') as file:
+    #             buffer = file.read()
+    #             hashed.update(buffer)
+    #         printHash(hashed.hexdigest())
+    #     except:
+    #         # Improve this
+    #         print("Could not hash file")
+
 if len(sys.argv) > 1:
-    if sys.argv[1] == "sha256" and sys.argv[2] == "-f":
+    if sys.argv[1] == 'help' or sys.argv[1] == '-h':
+        print(helpMessage)
+    elif sys.argv[1] == '-c':
+        print('compare')
+    elif sys.argv[1] == "sha256" and sys.argv[2] == "-f":
         try:
             hashed = hashlib.sha256()
             with open(sys.argv[3], 'rb') as file:
                 buffer = file.read()
                 hashed.update(buffer)
-            print('\n',hashed.hexdigest(),'\n')
+            printHash(hashed.hexdigest())
         except:
             # Improve this
-            print("Could not hash file")
+            printError('fail')
     elif sys.argv[1] == "sha512" and sys.argv[2] == "-f":
         try:
             hashed = hashlib.sha512()
             with open(sys.argv[3], 'rb') as file:
                 buffer = file.read()
                 hashed.update(buffer)
-            print("\n",hashed.hexdigest(),"\n")
+            printHash(hashed.hexdigest())
         except:
-            # Improve this
-            print("Could not hash file")
+            printError('fail')
     elif sys.argv[1] == "sha256" and sys.argv[2] == "-s":
         hashed = hashlib.sha256()
         hashed.update(bytes(sys.argv[3], 'utf-8'))
         print(hashed.hexdigest())
+    elif sys.argv[1] == "sha512" and sys.argv[2] == "-s":
+        hashed = hashlib.sha512()
+        hashed.update(bytes(sys.argv[3], 'utf-8'))
+        print(hashed.hexdigest())
 else:
-    print("Missing required arguments, please see below")
-    print(helpMessage)
+    printError('parameter')
     exit(1)
-# myHash = hashlib.new('sha512')
-
-# theInput = input("What do you want to hash> ")
-# byteInput = bytes(theInput, 'ascii')
-# print("Byte output", byteInput)
-# myHash.update(byteInput)
-
-# print(myHash.digest())
-
-# print("Digest Size:", myHash.digest_size)
-
-# hashed = hashlib.sha256(byteInput).hexdigest()
-# print(hashed)
