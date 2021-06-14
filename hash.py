@@ -32,18 +32,6 @@ def printError(error):
         print(f"{bgColors.warning}Missing required arguments, please see below{bgColors.endC}")
         print(helpMessage)
 
-# def hashIt(hashType, option):
-    # if hashType == "sha256" and option == "-f":
-    #     try:
-    #         hashed = hashlib.sha256()
-    #         with open(sys.argv[3], 'rb') as file:
-    #             buffer = file.read()
-    #             hashed.update(buffer)
-    #         printHash(hashed.hexdigest())
-    #     except:
-    #         # Improve this
-    #         print("Could not hash file")
-
 if len(sys.argv) > 1:
     if sys.argv[1] == 'help' or sys.argv[1] == '-h':
         print(helpMessage)
