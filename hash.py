@@ -20,6 +20,9 @@ helpMessage = f"""
         {bgColors.bold}-f{bgColors.endC} Hash a file
 
         {bgColors.bold}-s{bgColors.endC} Hash a string
+
+        {bgColors.bold}-c{bgColors.endC} Compare hash (sha512 -f ONLY)
+            usage: ./hash.py sha512 -c -f <pathToFile> <hashToCompare>
 """
 
 def printHash(finalHash):
