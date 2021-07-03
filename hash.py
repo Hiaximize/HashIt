@@ -35,8 +35,19 @@ def printError(error):
 if len(sys.argv) > 1:
     if sys.argv[1] == 'help' or sys.argv[1] == '-h':
         print(helpMessage)
-    elif sys.argv[1] == '-c':
-        print('compare')
+    elif sys.argv[1] == "sha512" and sys.argv[2] == "-c" and sys.argv[3] == "-f":
+        try:
+            hashed = hashlib.sha512()
+            with open(sys.argv[4], 'rb') as file:
+                buffer = file.read()
+                hashed.update(buffer)
+            hashedFile = hashed.hexdigest()
+            if hashedFile == sys.argv[5]:
+                print(f'{bgColors.success}File Unaltered{bgColors.endC}')
+            else:
+                print(f"{bgColors.fail}Hashes don't match, I wouldn't run file{bgColors.endC}")
+        except:
+            printError('fail')
     elif sys.argv[1] == "sha256" and sys.argv[2] == "-f":
         try:
             hashed = hashlib.sha256()
